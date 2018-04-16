@@ -8,7 +8,8 @@ import mongoose from 'mongoose';
 import flash from 'connect-flash';
 import session from 'express-session';
 import connect from 'connect-mongo';
-import ejs from 'ejs';
+import hbs from 'hbs';
+import expressHbs from 'express-handlebars';
 
 import passportConfig from './config/passport';
 import routes from './routes';
@@ -27,27 +28,23 @@ mongoose.connect(process.env.DB, err => {
 });
 
 app.set('view engine', 'ejs');
-
+app.use(express.static(__dirname + '/public'));
 app.use(logger('dev'));
 app.use(cookieParser());
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({extended: false}));
 // parse application/json
 app.use(bodyParser.json());
-app.use(session({
-  secret: process.env.SESSION_SECRET,
-  resave: true,
-  saveUninitialized: true,
-  cookie: {
-    secure: true
-  }
-}));
+app.use(session({secret: process.env.SESSION_SECRET, resave: true, saveUninitialized: true, store}));
 // passportConfig(passport);
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
-
-routes(app, passport);
+app.use((req, res, next) => {
+  res.locals.user = req.user;
+  next();
+})
+app.use(routes);
 
 app.listen(PORT, () => {
   console.log(`Running on http://localhost:${PORT}`.yellow.underline);
