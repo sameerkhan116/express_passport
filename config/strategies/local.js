@@ -10,7 +10,7 @@ passport.use('local-signup', new LocalStrategy({
   passwordField: 'password',
   passReqToCallback: true
 }, (req, email, password, done) => {
-  User.findOne({
+  process.nextTick(() => User.findOne({
     "local.email": email
   }, (err, user) => {
     if (err) {
@@ -18,6 +18,17 @@ passport.use('local-signup', new LocalStrategy({
     }
     if (user) {
       return done(null, false, req.flash('signupMessage', 'That email is already taken.'));
+    }
+    if (req.user) {
+      let user = req.user;
+      user.local.email = email;
+      user.local.password = user.generateHash(password);
+      user.save(err => {
+        if (err) {
+          throw err;
+        }
+        return done(null, user);
+      })
     } else {
       let newUser = new User();
       newUser.local.email = email;
@@ -29,7 +40,7 @@ passport.use('local-signup', new LocalStrategy({
         return done(null, newUser);
       });
     }
-  });
+  }))
 }));
 
 passport.use('local-login', new LocalStrategy({

@@ -19,4 +19,12 @@ router.get('/connect/github/callback', passport.authorize('github', {
   failureRedirect: '/'
 }));
 
+router.get('/unlink/github', (req, res) => {
+  var user = req.user;
+  user.github.token = undefined;
+  user.save(function (err) {
+    res.redirect('/profile');
+  });
+});
+
 export default router;

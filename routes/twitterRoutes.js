@@ -17,4 +17,12 @@ router.get('/connect/twitter/callback', passport.authorize('twitter', {
   failureRedirect: '/'
 }));
 
+router.get('/unlink/twitter', (req, res) => {
+  var user = req.user;
+  user.twitter.token = undefined;
+  user.save(function (err) {
+    res.redirect('/profile');
+  });
+});
+
 export default router;

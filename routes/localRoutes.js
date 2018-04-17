@@ -48,10 +48,19 @@ router
     });
   })
   .post(passport.authenticate('local-signup', {
-    successRedirect: '/profile ',
+    successRedirect: '/profile',
     failureRedirect: '/connect/local',
     failureFlash: true
   }));
+
+router.get('/unlink/local', (req, res) => {
+  let user = req.user;
+  user.local.email = undefined;
+  user.local.password = undefined;
+  user.save((err) => {
+    res.redirect('/profile');
+  })
+})
 
 router.get('/profile', isLoggedIn, (req, res) => {
   res.render('profile.ejs', {user: req.user});

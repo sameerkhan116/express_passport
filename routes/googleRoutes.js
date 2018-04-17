@@ -21,4 +21,12 @@ router.get('/connect/google/callback', passport.authorize('google', {
   failureRedirect: '/'
 }));
 
+router.get('/unlink/google', (req, res) => {
+  var user = req.user;
+  user.google.token = undefined;
+  user.save(function (err) {
+    res.redirect('/profile');
+  });
+});
+
 export default router;
