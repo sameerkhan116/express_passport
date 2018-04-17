@@ -11,7 +11,11 @@ import connect from 'connect-mongo';
 import ejs from 'ejs';
 
 import passportConfig from './config/passport';
-import routes from './routes';
+// import routes from './routes';
+import localRoutes from './routes/localRoutes';
+import githubRoutes from './routes/githubRoutes';
+import twitterRoutes from './routes/twitterRoutes';
+import googleRoutes from './routes/googleRoutes';
 
 require('dotenv').config({path: 'variables.env'});
 
@@ -51,7 +55,10 @@ app.use((req, res, next) => {
   res.locals.user = req.user;
   next();
 })
-app.use(routes);
+app.use(localRoutes);
+app.use(githubRoutes);
+app.use(twitterRoutes);
+app.use(googleRoutes);
 
 app.listen(PORT, () => {
   console.log(`Running on http://localhost:${PORT}`.yellow.underline);

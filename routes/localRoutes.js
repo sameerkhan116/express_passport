@@ -53,54 +53,6 @@ router
     failureFlash: true
   }));
 
-router.get('/auth/github', passport.authenticate('github', {
-  scope: ['public_profile', 'email']
-}));
-
-router.get('/auth/github/callback', passport.authenticate('github', {
-  successRedirect: '/profile',
-  failureRedirect: '/'
-}));
-
-router.get('/connect/github', passport.authorize('github'));
-
-router.get('/connect/github/callback', passport.authorize('github', {
-  successRedirect: '/profile',
-  failureRedirect: '/'
-}));
-
-router.get('/auth/twitter', passport.authenticate('twitter'));
-
-router.get('/auth/twitter/callback', passport.authenticate('twitter', {
-  successRedirect: '/profile',
-  failureRedirect: '/'
-}));
-
-router.get('/connect/twitter', passport.authorize('twitter', {scope: 'email'}));
-
-router.get('/connect/twitter/callback', passport.authorize('twitter', {
-  successRedirect: '/profile',
-  failureRedirect: '/'
-}));
-
-router.get('/auth/google', passport.authenticate('google', {
-  scope: ['profile', 'email']
-}));
-
-router.get('/auth/google/callback', passport.authenticate('google', {
-  successRedirect: '/profile',
-  failureRedirect: '/'
-}));
-
-router.get('/connect/google', passport.authorize('google', {
-  scope: ['profile', 'email']
-}));
-
-router.get('/connect/google/callback', passport.authorize('google', {
-  successRedirect: '/profile',
-  failureRedirect: '/'
-}));
-
 router.get('/profile', isLoggedIn, (req, res) => {
   res.render('profile.ejs', {user: req.user});
 });
