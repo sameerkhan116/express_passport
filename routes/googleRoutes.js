@@ -1,3 +1,8 @@
+/*
+  route from express for creating router module.
+  passport for local authentication strategy.
+  routes setups is same as githubRouter.js
+*/
 import route from 'express';
 import passport from 'passport';
 
