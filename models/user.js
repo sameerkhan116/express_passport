@@ -6,7 +6,7 @@ const userSchema = mongoose.Schema({
     email: String,
     password: String
   },
-  facebook: {
+  github: {
     id: String,
     token: String,
     name: String,
@@ -18,7 +18,7 @@ const userSchema = mongoose.Schema({
     displayName: String,
     username: String
   },
-  github: {
+  google: {
     id: String,
     token: String,
     email: String,

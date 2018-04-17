@@ -8,8 +8,7 @@ import mongoose from 'mongoose';
 import flash from 'connect-flash';
 import session from 'express-session';
 import connect from 'connect-mongo';
-import hbs from 'hbs';
-import expressHbs from 'express-handlebars';
+import ejs from 'ejs';
 
 import passportConfig from './config/passport';
 import routes from './routes';
@@ -35,7 +34,15 @@ app.use(cookieParser());
 app.use(bodyParser.urlencoded({extended: false}));
 // parse application/json
 app.use(bodyParser.json());
-app.use(session({secret: process.env.SESSION_SECRET, resave: true, saveUninitialized: true, store}));
+app.use(session({
+  secret: process.env.SESSION_SECRET,
+  resave: true,
+  cookie: {
+    secure: false
+  },
+  saveUninitialized: true,
+  store
+}));
 // passportConfig(passport);
 app.use(passport.initialize());
 app.use(passport.session());
