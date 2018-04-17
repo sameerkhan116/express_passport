@@ -59,6 +59,9 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 app.use(session({
   secret: process.env.SESSION_SECRET, // required to sign the session cookies
+  cookie: {
+    secure: false
+  },
   saveUninitialized: true, // Forces a session that is "uninitialized" to be saved to the store. A session is uninitialized when it is new but not modified.
   store
 }));
